@@ -1,6 +1,9 @@
-import path from 'path';
+import { resolve,dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-module.exports = {
+export default {
+
   target: 'node',
   module: {
     rules: [
@@ -16,6 +19,6 @@ module.exports = {
   },
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
   },
 };
