@@ -19,9 +19,25 @@ export const UserModel = {
           return undefined;
     },
 
-    async findOrFail(id:string): Promise<User|undefined> {
-        return users.find(item => item.id === id);
-    }
+    async find(id:string): Promise<User|null> {
+        
+        const user = users.find(item => item.id === id);
+        
+        if(!user) return null;
+        
+        return user;
+    },
+
+    async delete(id:string):Promise<void|null> {
+        
+        const user  = await this.find(id);
+
+        if(user) { 
+
+            users.filter(item => item.id!==id);
+        }
+
+    },
 
 
 }

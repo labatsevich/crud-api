@@ -17,17 +17,8 @@ export const dispatch = async (req:IncomingMessage, res:ServerResponse): Promise
         
         const body = await parseBody(req);
         const user = JSON.parse(body);
-        const result = await UserController.create(user);
-
-        if(result){
-            res.statusCode = HTTPSTATUS.Created;
-            res.write(JSON.stringify(result));
-        }
-        else{
-            res.statusCode = HTTPSTATUS.ServerError;
-            res.write('Something went wrong')
-        }
-        
+        await UserController.create(user,res);
+    
     }
     else if(method === 'PUT'){
         console.log('bla')
