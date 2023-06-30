@@ -9,8 +9,8 @@ export const dispatch = async (req:IncomingMessage, res:ServerResponse): Promise
 
     if(req.url){
         const {method,url} = req;
-        const _url = url.slice(1);
-        const id: string | undefined = _url.split('/').length === 3 ? _url.split('/').pop() : '';
+        const [prefix, resourse,id] = url.slice(1).split('/');
+        const _url = `${prefix}/${resourse}`;
         
         res.setHeader('Content-type','application/json');
     
@@ -37,5 +37,7 @@ export const dispatch = async (req:IncomingMessage, res:ServerResponse): Promise
         res.statusCode = HTTPSTATUS.ServerError;
         res.end(JSON.stringify(MESSAGE.ServerError))
     }
+
+    res.end()
     
 }
