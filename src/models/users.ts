@@ -1,14 +1,14 @@
-import { User } from "../types"
+import { IUser } from "../types"
 import { users } from "../data"
-import {v1 as uuid } from 'uuid'
+import {v4 as uuid } from 'uuid'
 
 export const UserModel = {
 
-     async getAll(): Promise<User[]>{
+     async getAll(): Promise<IUser[]>{
         return users;
     },
 
-    async add(user:User):Promise<User|undefined> {
+    async add(user:IUser):Promise<IUser|undefined> {
         
         if(user.username){
             user.id = uuid();
@@ -19,7 +19,7 @@ export const UserModel = {
           return undefined;
     },
 
-    async find(id:string): Promise<User|null> {
+    async find(id:string): Promise<IUser|null> {
         
         const user = users.find(item => item.id === id);
         

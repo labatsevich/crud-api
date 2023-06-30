@@ -1,3 +1,3 @@
-import { User } from "./types";
+import { Store } from "./types";
 
-export const users: User[] = [];
+export const users: Store = [];
