@@ -2,6 +2,7 @@ import { HTTPSTATUS, IUser, MESSAGE } from "../types";
 import { UserModel } from "../models/users";
 import { ServerResponse } from "http";
 import { Validator } from "../utils/validator";
+import { response } from "../utils/response";
 
 export const UserController = {
 
@@ -53,31 +54,21 @@ export const UserController = {
 
   async create(user: IUser, res: ServerResponse): Promise<void> {
 
-    if (!Validator.checkUser(user)) {
-
-      res.statusCode = HTTPSTATUS.Invalid;
-      res.write(JSON.stringify({ message: MESSAGE.BadInput }))
-
+    if (Validator.checkUser(user)) {
+      const newUser = await UserModel.add(user);
+      response(res,HTTPSTATUS.Created,newUser);
     }
     else {
-
-      try {
-        await UserModel.add(user);
-      } catch {
-        res.statusCode = HTTPSTATUS.ServerError;
-        res.write(JSON.stringify({ message: MESSAGE.ServerError }))
-      }
-
+      response(res,HTTPSTATUS.Invalid,MESSAGE.BadInput)
     }
-
+      
   },
 
   async update(id: string, res: ServerResponse): Promise<void> {
 
     if (!Validator.checkUUID(id)) {
 
-      res.statusCode = HTTPSTATUS.Invalid;
-      res.write(JSON.stringify({ error: MESSAGE.InvalidId }))
+      response(res,HTTPSTATUS.Invalid,MESSAGE.InvalidId)
 
     }
     else {

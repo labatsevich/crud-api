@@ -8,15 +8,13 @@ export const UserModel = {
         return users;
     },
 
-    async add(user:IUser):Promise<IUser|undefined> {
+    async add(user:IUser):Promise<IUser> {
         
-        if(user.username){
             user.id = uuid();
             users.push(user);
-            return user;
-          }
             
-          return undefined;
+            return user;
+          
     },
 
     async find(id:string): Promise<IUser|null> {

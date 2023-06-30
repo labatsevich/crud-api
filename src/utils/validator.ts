@@ -23,11 +23,7 @@ export const Validator = {
     },
 
     checkUser(user:IUser):boolean {
-        
-        if(!this.checkRequired(user)) return false;
-
         return this.checkAge(user) && this.checkName(user) && this.checkHobbies(user);
-        
     },
 
     checkUUID(id:string):boolean{
