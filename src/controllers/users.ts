@@ -3,6 +3,7 @@ import { UserModel } from "../models/users";
 import { ServerResponse } from "http";
 import { Validator } from "../utils/validator";
 import { response } from "../utils/response";
+import  data  from "../data";
 
 export const UserController = {
 
@@ -64,11 +65,12 @@ export const UserController = {
       
   },
 
-  async update(id: string, res: ServerResponse): Promise<void> {
+  async update(id: string, params:IUser, res: ServerResponse): Promise<void> {
 
     if (!Validator.checkUUID(id)) {
 
-      response(res,HTTPSTATUS.Invalid,MESSAGE.InvalidId)
+      response(res,HTTPSTATUS.Invalid,MESSAGE.InvalidId);
+      return;
 
     }
     else {
@@ -77,8 +79,20 @@ export const UserController = {
         const user = await UserModel.find(id);
 
         if (user) {
-          res.statusCode = HTTPSTATUS.Success;
-          res.write(JSON.stringify(user));
+
+          if(!Validator.checkUser(params)){
+            response(res, HTTPSTATUS.Invalid, MESSAGE.BadInput);
+            return;
+          }
+
+          data.users.map((item:IUser, i:number) => {
+            if(item.id === id){
+              data.users[i] = {...item,...params};
+            }
+          });
+
+          response(res, HTTPSTATUS.Success, MESSAGE.Success);
+
         }
         else {
 
@@ -92,6 +106,28 @@ export const UserController = {
         res.write(JSON.stringify({ error: MESSAGE.ServerError }))
       }
 
+    }
+  },
+
+  async delete(id:string,res:ServerResponse):Promise<void> {
+
+    if(!Validator.checkUUID(id)){
+      response(res,HTTPSTATUS.Invalid, MESSAGE.InvalidId);
+      return
+    }
+
+    const user = await UserModel.find(id);
+
+    if(user){
+
+      await UserModel.delete(id);
+
+      response(res,HTTPSTATUS.Deleted,MESSAGE.Success)
+
+    }
+    else{
+      response(res, HTTPSTATUS.NotFound,MESSAGE.NotExist);
+      return;
     }
   }
 

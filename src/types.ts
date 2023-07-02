@@ -13,7 +13,8 @@ export enum MESSAGE {
   InvalidId = 'Not uuid',
   NotExist = 'User doesn\'t exist',
   EndpointNotFound ='Endpoint doesn\'t exist',
-  BadInput = 'Doesn\'t contain required fields or invalid data'
+  BadInput = 'Doesn\'t contain required fields or invalid data',
+  Success = 'Completed'
 }
 
 export interface IUser {
@@ -23,5 +24,7 @@ export interface IUser {
     hobbies: Array<string>[];
   }
 
-  export type Store =  IUser[];
+  export type Store = {
+    users: IUser[]
+  }
   

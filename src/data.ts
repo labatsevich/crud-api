@@ -1,3 +1,8 @@
 import { Store } from "./types";
 
-export const users: Store = [];
+
+const data: Store = {
+  users: []
+};
+
+export default data;

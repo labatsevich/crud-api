@@ -26,8 +26,13 @@ export const dispatch = async (req:IncomingMessage, res:ServerResponse): Promise
         
         }
         else if(method === 'PUT'){
-            console.log('bla')
+             const body = await parseBody(req); 
+             const user = JSON.parse(body);
+             await UserController.update(id, user ,res);
         } 
+        else if(method === 'DELETE'){
+            await UserController.delete(id,res);
+        }
         else{
             res.statusCode = HTTPSTATUS.NotFound;
             res.end(JSON.stringify(MESSAGE.EndpointNotFound))
